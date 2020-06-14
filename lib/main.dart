@@ -6,6 +6,7 @@ void main() {
     title: 'News application Demo',
     theme: ThemeData(
       visualDensity: VisualDensity.adaptivePlatformDensity,
+      primaryColor: Colors.green,
     ),
     debugShowCheckedModeBanner: false,
     home: Home(),

@@ -4,6 +4,7 @@ import 'package:flutterfirebasecrud/helper/News.dart';
 import 'package:flutterfirebasecrud/helper/data.dart';
 import 'package:flutterfirebasecrud/model/CategoryModel.dart';
 import 'package:flutterfirebasecrud/model/NewsArticleModel.dart';
+import 'package:flutterfirebasecrud/ui/Articles.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -94,9 +95,10 @@ class _HomeState extends State<Home> {
                           itemCount: _newsArticle.length,
                           itemBuilder: (context, index) {
                             return NewsBlogTile(
-                                imageUrl: _newsArticle[index].urlToImage,
-                                title: _newsArticle[index].title,
-                                description: _newsArticle[index].description);
+                              imageUrl: _newsArticle[index].urlToImage,
+                              title: _newsArticle[index].title,
+                              description: _newsArticle[index].description,
+                              url: _newsArticle[index].url,);
                           }),
                     ),
                   ],
@@ -151,37 +153,43 @@ class TitleCategory extends StatelessWidget {
 
 //news blog tiles
 class NewsBlogTile extends StatelessWidget {
-  final imageUrl, title, description;
+  final imageUrl, title, description, url;
 
-  NewsBlogTile(
-      {@required this.imageUrl,
-      @required this.title,
-      @required this.description});
+  NewsBlogTile({@required this.imageUrl,
+    @required this.title,
+    @required this.description, @required this.url});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(MyConstants.margin8),
-      child: Column(
-        children: <Widget>[
-          ClipRRect(
-              borderRadius: BorderRadius.circular(MyConstants.margin8),
-              child: Image.network(imageUrl)),
-          Text(
-            title,
-            style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-                fontSize: MyConstants.font16),
-          ),
-          SizedBox(
-            height: MyConstants.margin8,
-          ),
-          Text(
-            description,
-            style: TextStyle(color: Colors.black54),
-          )
-        ],
+    return GestureDetector(
+      onTap: () {
+        //pass news details
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => Articles(newsUrl: url,)));
+      },
+      child: Container(
+        margin: EdgeInsets.all(MyConstants.margin8),
+        child: Column(
+          children: <Widget>[
+            ClipRRect(
+                borderRadius: BorderRadius.circular(MyConstants.margin8),
+                child: Image.network(imageUrl)),
+            Text(
+              title,
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                  fontSize: MyConstants.font16),
+            ),
+            SizedBox(
+              height: MyConstants.margin8,
+            ),
+            Text(
+              description,
+              style: TextStyle(color: Colors.black54),
+            )
+          ],
+        ),
       ),
     );
   }
