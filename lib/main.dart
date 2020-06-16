@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterfirebasecrud/ui/Home.dart';
+import 'package:mynewsapp/ui/Home.dart';
 
 void main() {
   runApp(MaterialApp(

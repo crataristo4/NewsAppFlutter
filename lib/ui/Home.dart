@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutterfirebasecrud/constants/MyConstansts.dart';
-import 'package:flutterfirebasecrud/helper/News.dart';
-import 'package:flutterfirebasecrud/helper/data.dart';
-import 'package:flutterfirebasecrud/model/CategoryModel.dart';
-import 'package:flutterfirebasecrud/model/NewsArticleModel.dart';
-import 'package:flutterfirebasecrud/ui/Articles.dart';
+import 'package:mynewsapp/constants/MyConstansts.dart';
+import 'package:mynewsapp/helper/News.dart';
+import 'package:mynewsapp/helper/data.dart';
+import 'package:mynewsapp/model/CategoryModel.dart';
+import 'package:mynewsapp/model/NewsArticleModel.dart';
+import 'package:mynewsapp/ui/Articles.dart';
+import 'package:mynewsapp/ui/Categories.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -12,7 +13,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<CategoryModel> categoryList = new List<CategoryModel>();
+  List<CategoryModel> categoryItems = new List<CategoryModel>();
   List<NewsArticleModel> _newsArticle = new List<NewsArticleModel>();
 
   bool isLoading = true;
@@ -20,23 +21,23 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    categoryList = getAllCategories();
+    categoryItems = getAllCategories();
 
     getNews();
   }
 
   //fetch news from api
   getNews() async {
-    News newsItems = new News();
-    await newsItems.getAllNews();
+    // News newsItems = new News();
+    // await newsItems.getAllNews();
 
-    _newsArticle = newsItems.newsList;
+    // _newsArticle = newsItems.newsList;
 
     setState(() {
       isLoading = false;
     });
 
-    //_newsArticle = await new News().getAllNews().asStream().toList();
+    _newsArticle = await new News().getAllNews().asStream().toList();
   }
 
   @override
@@ -66,44 +67,45 @@ class _HomeState extends State<Home> {
                 child: CircularProgressIndicator(), //progress bar
               ),
             )
-          : SingleChildScrollView(
-              child: Container(
-                child: Column(
-                  children: <Widget>[
-                    //news categories
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: MyConstants.margin16),
-                      height: MyConstants.columnHeight70,
-                      child: ListView.builder(
-                        itemCount: categoryList.length,
-                        itemBuilder: (context, index) {
-                          return TitleCategory(
-                            title: categoryList[index].categoryName,
-                          );
-                        },
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                      ),
-                    ),
-
-                    //news tiles
-                    Container(
-                      child: ListView.builder(
-                          physics: ClampingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: _newsArticle.length,
-                          itemBuilder: (context, index) {
-                            return NewsBlogTile(
-                              imageUrl: _newsArticle[index].urlToImage,
-                              title: _newsArticle[index].title,
-                              description: _newsArticle[index].description,
-                              url: _newsArticle[index].url,);
-                          }),
-                    ),
-                  ],
+          : ListView(
+              children: <Widget>[
+                //news categories
+                Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: MyConstants.margin16),
+                  height: MyConstants.columnHeight70,
+                  child: ListView.builder(
+                    itemCount: categoryItems.length,
+                    itemBuilder: (context, index) {
+                      return TitleCategory(
+                        title: categoryItems[index].categoryName,
+                      );
+                    },
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                  ),
                 ),
-              ),
+
+                //news tiles
+                SingleChildScrollView(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: ListView.builder(
+                        physics: ClampingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: _newsArticle.length,
+                        itemBuilder: (context, index) {
+                          return NewsBlogTile(
+                            imageUrl: _newsArticle[index].urlToImage,
+                            title: _newsArticle[index].title,
+                            description: _newsArticle[index].description,
+                            url: _newsArticle[index].url,
+                          );
+                        }),
+                  ),
+                ),
+              ],
             ),
     );
   }
@@ -112,14 +114,15 @@ class _HomeState extends State<Home> {
 //news title category
 class TitleCategory extends StatelessWidget {
   final title;
-
   TitleCategory({this.title});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        debugPrint(title);
+        String titleToLowerCase = title.toString().toLowerCase();
+        Navigator.push(context, MaterialPageRoute(builder: (context) =>
+            Categories(categoryTitle: titleToLowerCase,)));
       },
       child: Container(
         margin: EdgeInsets.all(MyConstants.margin8),

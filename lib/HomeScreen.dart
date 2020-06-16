@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterfirebasecrud/DetailsPage.dart';
+import 'package:mynewsapp/DetailsPage.dart';
 
 class Home extends StatefulWidget {
   @override

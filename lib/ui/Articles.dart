@@ -16,6 +16,8 @@ class _ArticlesState extends State<Articles> {
   final Completer<WebViewController> _completer =
       Completer<WebViewController>();
 
+  final mKey = UniqueKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,15 +28,13 @@ class _ArticlesState extends State<Articles> {
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: WebView(
-          initialUrl: widget.newsUrl,
-          onWebViewCreated: ((WebViewController wvc) {
-            _completer.complete(wvc);
-          }),
-        ),
+      body: WebView(
+        key: mKey,
+        initialUrl: widget.newsUrl,
+        javascriptMode: JavascriptMode.unrestricted,
+        onWebViewCreated: ((WebViewController webViewController) {
+          _completer.complete(webViewController);
+        }),
       ),
     );
   }

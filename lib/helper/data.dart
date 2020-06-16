@@ -1,4 +1,4 @@
-import 'package:flutterfirebasecrud/model/CategoryModel.dart';
+import 'package:mynewsapp/model/CategoryModel.dart';
 
 List<CategoryModel> getAllCategories() {
   List<CategoryModel> categoryList = new List<CategoryModel>();
@@ -21,6 +21,21 @@ List<CategoryModel> getAllCategories() {
   //sports
   categoryModel = new CategoryModel();
   categoryModel.categoryName = "Sports";
+  categoryList.add(categoryModel);
+
+  //tech
+  categoryModel = new CategoryModel();
+  categoryModel.categoryName = "Technology";
+  categoryList.add(categoryModel);
+
+  //health
+  categoryModel = new CategoryModel();
+  categoryModel.categoryName = "Health";
+  categoryList.add(categoryModel);
+
+  //science
+  categoryModel = new CategoryModel();
+  categoryModel.categoryName = "Science";
   categoryList.add(categoryModel);
 
   return categoryList;
